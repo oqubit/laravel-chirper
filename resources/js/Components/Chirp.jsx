@@ -5,18 +5,23 @@ import { useForm, usePage } from '@inertiajs/react';
 import Dropdown from './Dropdown';
 import InputError from './InputError';
 import PrimaryButton from './PrimaryButton';
- 
+
 dayjs.extend(relativeTime);
 
-export default function Chirp({ chirp }) {
-    const {auth} = usePage().props;
+export default function Chirp({ chirp, onChirpEdit, onChirpDelete }) {
+    const { auth } = usePage().props;
     const [editing, setEditing] = useState(false);
-    const {data, setData, patch, clearErrors, reset, errors} = useForm({
+    const { data, setData, patch, clearErrors, reset, errors } = useForm({
         message: chirp.message,
     });
     const submit = (e) => {
         e.preventDefault();
-        patch(route("chirps.update", chirp.id), {onSuccess: () => setEditing(false)});
+        patch(route("chirps.update", chirp.id), {
+            onSuccess: (page) => {
+                setEditing(false);
+                onChirpEdit(page);
+            }
+        });
     };
     return (
         <div className="p-6 flex space-x-2">
@@ -41,14 +46,14 @@ export default function Chirp({ chirp }) {
                             </Dropdown.Trigger>
                             <Dropdown.Content>
                                 <button
-                                className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:bg-gray-100 transition duration-150 ease-in-out"
-                                onClick={() => setEditing(true)}>
+                                    className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:bg-gray-100 transition duration-150 ease-in-out"
+                                    onClick={() => setEditing(true)}
+                                >
                                     Edit
                                 </button>
                                 <Dropdown.Link
                                     as="button"
-                                    href={route("chirps.destroy", chirp.id)}
-                                    method="delete"
+                                    onClick={(e) => onChirpDelete(e, chirp.id)}
                                 >
                                     Delete
                                 </Dropdown.Link>
@@ -64,14 +69,14 @@ export default function Chirp({ chirp }) {
                             onChange={e => setData("message", e.target.value)}
                             className="mt-4 w-full text-gray-900 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
                         />
-                        <InputError message={errors.message} className="mt-2"/>
+                        <InputError message={errors.message} className="mt-2" />
                         <div className="space-x-2">
                             <PrimaryButton className="mt-4">
                                 Save
                             </PrimaryButton>
-                            <button 
+                            <button
                                 className="mt-4"
-                                onClick={() => {setEditing(false); reset(); clearErrors();}}
+                                onClick={() => { setEditing(false); reset(); clearErrors(); }}
                             >
                                 Cancel
                             </button>
