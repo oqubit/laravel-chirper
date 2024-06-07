@@ -4,8 +4,6 @@ namespace Tests\Feature\Policies;
 
 use App\Models\Chirp;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ChirpPolicyTest extends TestCase
