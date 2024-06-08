@@ -4,6 +4,7 @@ namespace Tests\Feature\Controllers;
 
 use App\Models\Chirp;
 use App\Models\User;
+use Inertia\Testing\AssertableInertia as Assert;
 use Tests\TestCase;
 
 class ChirpControllerTest extends TestCase
@@ -20,6 +21,31 @@ class ChirpControllerTest extends TestCase
         $this->actingAs($user);
         $response = $this->get(route('chirps.index'));
         $response->assertOk();
+    }
+
+    public function test_index_has_chirps(): void
+    {
+        $user = User::factory()->create();
+        $chirp = Chirp::factory(1)->create();
+        $this->actingAs($user);
+        $this->get(route('chirps.index'))
+            ->assertInertia(fn (Assert $page) => $page
+                ->component('Chirps/Index')
+                ->has('chirps', fn (Assert $page) => $page
+                    ->has('data', 1, fn (Assert $page) => $page
+                        ->where('message', $chirp->first()->message)
+                        ->etc()
+                        ->has('user', fn (Assert $page) => $page
+                            ->where('id', $chirp->first()->user_id)
+                            ->where('name', $chirp->first()->user->name)
+                            ->missing('password')
+                        )
+                    )
+                    ->has('prev_page_url')
+                    ->has('next_page_url')
+                    ->etc()
+                )
+            );
     }
 
     public function test_can_create_new_chirp(): void
