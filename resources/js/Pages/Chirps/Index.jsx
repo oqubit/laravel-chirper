@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
+import LoadingSpinner from "@/Components/LoadingSpinner";
 import ChirpsList from "@/Components/ChirpsList";
 import { useForm, Head, router } from "@inertiajs/react";
 import {
@@ -25,7 +26,7 @@ export default function Index({ auth, chirps }) {
 
     const handlePageChange = (url) => {
         setLoading(true);
-        router.get(url, { only: ["chirps"] }, {
+        router.get(url, { only: ["chirps"] }, { preserveScroll: true }, {
             onSuccess: (page) => {
                 setChirpz(page.props.chirps);
                 setLoading(false);
@@ -90,9 +91,7 @@ export default function Index({ auth, chirps }) {
                 </form>
 
                 {loading ? (
-                    <div className="spinner">
-                        <div className="loader">Loading...</div>
-                    </div>
+                    <LoadingSpinner className="h-[38rem]" />
                 ) : (
                     <ChirpsList
                         chirps={chirpz}
@@ -111,7 +110,7 @@ export default function Index({ auth, chirps }) {
                                         handleClickPrev();
                                     }}
                                     className={chirpz.current_page == 1 &&
-                                        "pointer-events-none cursor-default text-gray-400"
+                                        "pointer-events-none text-gray-400"
                                     }
                                 />
                             </PaginationItem>
@@ -160,7 +159,7 @@ export default function Index({ auth, chirps }) {
                                         handleClickNext();
                                     }}
                                     className={chirpz.current_page == chirpz.last_page &&
-                                        "pointer-events-none cursor-default text-gray-400"
+                                        "pointer-events-none text-gray-400"
                                     }
                                 />
                             </PaginationItem>
