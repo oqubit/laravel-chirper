@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
@@ -20,15 +20,25 @@ export default function Index({ auth, chirps }) {
     const { data, setData, post, processing, reset, errors } = useForm({
         message: "",
     });
-
+    
+    const chirpsListRef = useRef(null);
     const [chirpz, setChirpz] = useState(chirps);
     const [loading, setLoading] = useState(false);
+    const [chirpsListHeight, setChirpsListHeight] = useState(0);
+
+    useEffect(() => {
+        if (chirpsListRef.current) {
+            const style = window.getComputedStyle(chirpsListRef.current);
+            const height = chirpsListRef.current.offsetHeight + parseInt(style.marginTop);
+            setChirpsListHeight(height);
+        }
+    }, [chirps]);
 
     const handlePageChange = (url) => {
         setLoading(true);
         router.get(url, { only: ["chirps"] }, { preserveScroll: true }, {
             onSuccess: (page) => {
-                setChirpz(page.props.chirps);
+                setChirpz(page.props.chirps); 
                 setLoading(false);
             },
             onError: () => {
@@ -91,9 +101,10 @@ export default function Index({ auth, chirps }) {
                 </form>
 
                 {loading ? (
-                    <LoadingSpinner className="h-[38rem]" />
+                    <LoadingSpinner style={{height: chirpsListHeight}} />
                 ) : (
                     <ChirpsList
+                        ref={chirpsListRef}
                         chirps={chirpz}
                         onChirpEdit={onChirpEdit}
                         onChirpDelete={onChirpDelete}
