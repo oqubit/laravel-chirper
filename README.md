@@ -1,8 +1,8 @@
 ## 🍁 Laravel Chirper
-- Built with: Laravel 11, Inertia, React, Tailwind CSS.
+- Built with: Laravel 11, Inertia, React, TailwindCSS.
 - Languages: PHP, JavaScript.
 - Features:
-    - Register/Login
+    - Registration/Login
     - Post/Edit/Delete posts (Chirps)
     - Email notifications
     - Partial reloads
