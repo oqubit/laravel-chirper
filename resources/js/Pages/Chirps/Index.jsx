@@ -5,15 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import LoadingSpinner from "@/Components/LoadingSpinner";
 import ChirpsList from "@/Components/ChirpsList";
 import { useForm, Head, router } from "@inertiajs/react";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/Components/ui/pagination";
+import Paginate from "@/Components/Paginate";
 
 
 export default function Index({ auth, chirps }) {
@@ -112,70 +104,14 @@ export default function Index({ auth, chirps }) {
                 )}
 
                 <div className="mt-3 bg-white shadow-sm rounded-lg divide-y">
-                    <Pagination>
-                        <PaginationContent>
-                            <PaginationItem>
-                                <PaginationPrevious
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleClickPrev();
-                                    }}
-                                    className={chirpz.current_page == 1 &&
-                                        "pointer-events-none text-gray-400"
-                                    }
-                                />
-                            </PaginationItem>
-
-                            {chirpz.current_page > 2 && (
-                                <PaginationItem>
-                                    <PaginationEllipsis />
-                                </PaginationItem>
-                            )}
-
-                            {(() => {
-                                const rows = [];
-                                const currPage = chirpz.current_page;
-                                const extraMin = currPage == chirpz.last_page ? 1 : 0;
-                                const extraMax = currPage == 1 ? 1 : 0;
-                                const min = Math.max(currPage - 1 - extraMin, 1);
-                                const max = Math.min(currPage + 1 + extraMax, chirpz.last_page);
-                                for (let i = min; i <= max; i++) {
-                                    rows.push(
-                                        <PaginationItem>
-                                            <PaginationLink
-                                                isActive={i == currPage}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    handlePageChange(chirpz.links[i].url);
-                                                }}
-                                            >
-                                                {i}
-                                            </PaginationLink>
-                                        </PaginationItem>
-                                    );
-                                }
-                                return rows;
-                            })()}
-
-                            {chirpz.current_page + 1 < chirpz.last_page && (
-                                <PaginationItem>
-                                    <PaginationEllipsis />
-                                </PaginationItem>
-                            )}
-
-                            <PaginationItem>
-                                <PaginationNext
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        handleClickNext();
-                                    }}
-                                    className={chirpz.current_page == chirpz.last_page &&
-                                        "pointer-events-none text-gray-400"
-                                    }
-                                />
-                            </PaginationItem>
-                        </PaginationContent>
-                    </Pagination>
+                    <Paginate
+                        currentPage={chirpz.current_page}
+                        lastPage={chirpz.last_page}
+                        pageLinksArray={chirpz.links}
+                        handleClickNext={handleClickNext}
+                        handleClickPrev={handleClickPrev}
+                        handlePageChange={handlePageChange}
+                    />
                 </div>
             </div>
         </AuthenticatedLayout>
