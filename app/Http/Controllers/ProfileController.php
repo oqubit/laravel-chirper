@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Chirp;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,6 +15,17 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+    /**
+     * Show the profile for a given user.
+     */
+    public function show(User $user): Response
+    {
+        return Inertia::render('Profile/Show', [
+            'user' => $user->only(['id', 'name', 'created_at']),
+            'chirps' => $user->chirps()->latest()->get()->map(fn (Chirp $chirp) => $chirp->setRelation('user', $user)),
+        ]);
+    }
+
     /**
      * Display the user's profile form.
      */

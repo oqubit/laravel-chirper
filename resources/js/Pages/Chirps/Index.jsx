@@ -6,6 +6,7 @@ import LoadingSpinner from "@/Components/LoadingSpinner";
 import ChirpsList from "@/Components/ChirpsList";
 import { useForm, Head, router } from "@inertiajs/react";
 import Paginate from "@/Components/Paginate";
+import Show from "../Profile/Show";
 
 
 export default function Index({ auth, chirps }) {
