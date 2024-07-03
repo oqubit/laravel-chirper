@@ -12,7 +12,7 @@ export default function Index({ auth, chirps }) {
     const { data, setData, post, processing, reset, errors } = useForm({
         message: "",
     });
-    
+
     const chirpsListRef = useRef(null);
     const [chirpz, setChirpz] = useState(chirps);
     const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ export default function Index({ auth, chirps }) {
         setLoading(true);
         router.get(url, { only: ["chirps"] }, { preserveScroll: true }, {
             onSuccess: (page) => {
-                setChirpz(page.props.chirps); 
+                setChirpz(page.props.chirps);
                 setLoading(false);
             },
             onError: () => {
@@ -93,7 +93,7 @@ export default function Index({ auth, chirps }) {
                 </form>
 
                 {loading ? (
-                    <LoadingSpinner style={{height: chirpsListHeight}} />
+                    <LoadingSpinner style={{ height: chirpsListHeight }} />
                 ) : (
                     <ChirpsList
                         ref={chirpsListRef}
