@@ -4,7 +4,9 @@
 - Features:
     - Registration/Login
     - Post/Edit/Delete posts (Chirps)
+    - Public user profiles
     - Email notifications
+    - Email verification
     - Partial reloads
     - Pagination
     - Unit tests
