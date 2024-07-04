@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChirpController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/users/{user}', [ProfileController::class, 'show'])->middleware('verified')->name('profile.show');
+    Route::post('/follow', [FollowController::class, 'store'])->middleware('verified')->name('follow.store');
+    Route::delete('/unfollow/{user}', [FollowController::class, 'destroy'])->middleware('verified')->name('follow.destroy');
 });
 
 Route::resource("chirps", ChirpController::class)

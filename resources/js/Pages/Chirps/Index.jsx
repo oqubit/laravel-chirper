@@ -6,8 +6,6 @@ import LoadingSpinner from "@/Components/LoadingSpinner";
 import ChirpsList from "@/Components/ChirpsList";
 import { useForm, Head, router } from "@inertiajs/react";
 import Paginate from "@/Components/Paginate";
-import Show from "../Profile/Show";
-
 
 export default function Index({ auth, chirps }) {
     const { data, setData, post, processing, reset, errors } = useForm({
@@ -29,7 +27,8 @@ export default function Index({ auth, chirps }) {
 
     const handlePageChange = (url) => {
         setLoading(true);
-        router.get(url, { only: ["chirps"] }, { preserveScroll: true }, {
+        router.get(url, {}, {
+            only: ["chirps"], preserveScroll: true,
             onSuccess: (page) => {
                 setChirpz(page.props.chirps);
                 setLoading(false);
