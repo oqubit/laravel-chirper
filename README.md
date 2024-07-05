@@ -2,11 +2,11 @@
 - Built with: Laravel 11, Inertia, React, TailwindCSS.
 - Languages: PHP, JavaScript.
 - Features:
-    - Registration/Login
-    - Post/Edit/Delete posts (Chirps)
+    - Registration/Login and email verification
+    - Create/Edit/Delete posts (chirps)
+    - Follow/Unfollow users
     - Public user profiles
     - Email notifications
-    - Email verification
     - Partial reloads
     - Pagination
     - Unit tests
