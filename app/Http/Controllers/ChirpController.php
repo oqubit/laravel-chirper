@@ -14,10 +14,19 @@ class ChirpController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
         return Inertia::render("Chirps/Index", [
-            "chirps" => fn () => Chirp::with("user:id,name")->latest()->paginate(5),
+            "chirps" => fn () => Chirp::with("user:id,name")
+                ->when($request->input('filter') === 'true', fn($q) =>
+                    $q->whereIn(
+                        'user_id',
+                        Auth()->user()->follows->pluck('id')
+                        ->merge(Auth()->id())
+                    )
+                )
+                ->latest()
+                ->paginate(5),
         ]);
     }
 

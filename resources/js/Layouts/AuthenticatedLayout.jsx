@@ -3,7 +3,7 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -24,7 +24,7 @@ export default function Authenticated({ user, header, children }) {
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                     Dashboard
                                 </NavLink>
-                                <NavLink href={route('chirps.index')} active={route().current('chirps.index')}>
+                                <NavLink href={route('chirps.index', { filter: 'false' })} active={route().current('chirps.index')}>
                                     Chirps
                                 </NavLink>
                             </div>
@@ -99,7 +99,7 @@ export default function Authenticated({ user, header, children }) {
                         <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
                             Dashboard
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('chirps.index')} active={route().current('chirps.index')}>
+                        <ResponsiveNavLink href={route('chirps.index', { filter: 'false' })} active={route().current('chirps.index')}>
                             Chirps
                         </ResponsiveNavLink>
                     </div>

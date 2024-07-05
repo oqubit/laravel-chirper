@@ -6,6 +6,7 @@ import LoadingSpinner from "@/Components/LoadingSpinner";
 import ChirpsList from "@/Components/ChirpsList";
 import { useForm, Head, router } from "@inertiajs/react";
 import Paginate from "@/Components/Paginate";
+import FilterTabs from "@/Components/FilterTabs";
 
 export default function Index({ auth, chirps }) {
     const { data, setData, post, processing, reset, errors } = useForm({
@@ -91,6 +92,8 @@ export default function Index({ auth, chirps }) {
                         Chirp
                     </PrimaryButton>
                 </form>
+
+                <FilterTabs/>
 
                 {loading ? (
                     <LoadingSpinner style={{ height: chirpsListHeight }} />
