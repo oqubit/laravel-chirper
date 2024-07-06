@@ -38,7 +38,9 @@ class FollowController extends Controller
                 'exists:users,id'
             ]
         ]);
-        Auth()->user()->follows()->attach($validated['id']);
+        /** @var \App\Models\User */
+        $authUser = auth()->user();
+        $authUser->follows()->attach($validated['id']);
         return back();
     }
 
@@ -71,7 +73,9 @@ class FollowController extends Controller
      */
     public function destroy(string $id): RedirectResponse
     {
-        Auth()->user()->follows()->detach($id);
+        /** @var \App\Models\User */
+        $authUser = auth()->user();
+        $authUser->follows()->detach($id);
         return back();
     }
 }

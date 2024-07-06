@@ -20,10 +20,12 @@ class ProfileController extends Controller
      */
     public function show(User $user): Response
     {
+        /** @var \App\Models\User */ // A 'phpDoc' block for Intelliphense to pickup the 'follows()' method o_Q
+        $authUser = auth()->user();
         return Inertia::render('Profile/Show', [
             'user' => $user->only(['id', 'name', 'created_at']),
             'chirps' => $user->chirps()->latest()->get()->map(fn (Chirp $chirp) => $chirp->setRelation('user', $user)),
-            'following' => fn() => Auth()->user()->follows()->where('user_id', $user->id)->exists(),
+            'following' => fn() => $authUser->follows()->where('user_id', $user->id)->exists(),
         ]);
     }
 
