@@ -17,7 +17,7 @@ export default function Index({ auth, chirps }) {
     const [chirpz, setChirpz] = useState(chirps);
     const [loading, setLoading] = useState(false);
     const [chirpsListHeight, setChirpsListHeight] = useState(0);
-    const showFollowedChirps = route().current('chirps.index', { filter: 'true' });
+    const shouldFilter = route().current('chirps.index', { filter: 'true' });
 
     useEffect(() => {
         if (chirpsListRef.current) {
@@ -29,8 +29,9 @@ export default function Index({ auth, chirps }) {
 
     const handlePageChange = (url) => {
         setLoading(true);
-        router.get(url, { filter: showFollowedChirps ? 'true' : 'false' }, {
-            only: ["chirps"], preserveScroll: true,
+        router.get(url, { filter: shouldFilter ? 'true' : 'false' }, {
+            only: ['chirps'],
+            preserveScroll: true,
             onSuccess: (page) => {
                 setChirpz(page.props.chirps);
                 setLoading(false);
@@ -94,7 +95,7 @@ export default function Index({ auth, chirps }) {
                     </PrimaryButton>
                 </form>
 
-                <FilterTabs/>
+                <FilterTabs shouldFilter={shouldFilter} />
 
                 {loading ? (
                     <LoadingSpinner style={{ height: chirpsListHeight }} />

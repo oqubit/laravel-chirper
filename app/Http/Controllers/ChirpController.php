@@ -16,13 +16,21 @@ class ChirpController extends Controller
      */
     public function index(Request $request): Response
     {
-        return Inertia::render("Chirps/Index", [
-            "chirps" => fn () => Chirp::with("user:id,name")
-                ->when($request->input('filter') === 'true', fn($q) =>
+        // Assume a default filter value if the filter url parameter is missing
+        if (!$request->input('filter')) {
+            $defaultParams = ['filter' => 'false'];
+            $params = array_merge($defaultParams, $request->query());
+            $request->merge($params);
+        }
+        $shouldFilter = $request->input('filter') === 'true';
+        
+        return Inertia::render('Chirps/Index', [
+            'chirps' => fn() => Chirp::with('user:id,name')
+                ->when($shouldFilter, fn($q) =>
                     $q->whereIn(
                         'user_id',
                         Auth()->user()->follows->pluck('id')
-                        ->merge(Auth()->id())
+                            ->merge(Auth()->id())
                     )
                 )
                 ->latest()
