@@ -9,6 +9,7 @@ import {
 } from "./ui/pagination";
 
 export default function Paginate({
+    pageNumsToShow,
     currentPage,
     lastPage,
     pageLinksArray,
@@ -17,10 +18,10 @@ export default function Paginate({
     handlePageChange,
 }) {
     const pageNumsArrayHTML = [];
-    const extraMin = currentPage == lastPage ? 1 : 0;
-    const extraMax = currentPage == 1 ? 1 : 0;
-    const min = Math.max(currentPage - 1 - extraMin, 1);
-    const max = Math.min(currentPage + 1 + extraMax, lastPage);
+    const pageNumsStepDown = Math.floor(pageNumsToShow / 2) - (pageNumsToShow % 2 === 0) * 1;
+    const pageNumsStepUp = Math.floor(pageNumsToShow / 2);
+    const min = Math.max(Math.min(currentPage - pageNumsStepDown, lastPage - pageNumsToShow + 1), 1);
+    const max = Math.max(Math.min(currentPage + pageNumsStepUp, lastPage), Math.min(pageNumsToShow, lastPage));
     for (let i = min; i <= max; i++) {
         pageNumsArrayHTML.push(
             <PaginationItem key={i}>
@@ -51,7 +52,7 @@ export default function Paginate({
                     />
                 </PaginationItem>
 
-                {currentPage > 2 && (
+                {(min > 1) && (
                     <PaginationItem>
                         <PaginationEllipsis />
                     </PaginationItem>
@@ -59,7 +60,7 @@ export default function Paginate({
 
                 {pageNumsArrayHTML}
 
-                {currentPage + 1 < lastPage && (
+                {(max < lastPage) && (
                     <PaginationItem>
                         <PaginationEllipsis />
                     </PaginationItem>

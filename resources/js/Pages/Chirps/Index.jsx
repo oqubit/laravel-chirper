@@ -110,6 +110,7 @@ export default function Index({ auth, chirps }) {
 
                 <div className="mt-3 bg-white shadow-sm rounded-lg divide-y">
                     <Paginate
+                        pageNumsToShow={3}
                         currentPage={chirpz.current_page}
                         lastPage={chirpz.last_page}
                         pageLinksArray={chirpz.links}
