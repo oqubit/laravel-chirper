@@ -53,7 +53,7 @@ class ChirpControllerTest extends TestCase
         $this->assertDatabaseEmpty('chirps');
         $user = User::factory()->create();
         $this->actingAs($user);
-        $response = $this->post(route('chirps.store'), ['message' => 'Hello there!']);
+        $response = $this->from(route('chirps.index'))->post(route('chirps.store'), ['message' => 'Hello there!']);
         $this->assertDatabaseHas('chirps', [
             'message' => 'Hello there!',
         ]);
@@ -94,7 +94,7 @@ class ChirpControllerTest extends TestCase
     {
         $chirp = Chirp::factory()->create();
         $this->actingAs($chirp->user);
-        $response = $this->patch(route('chirps.update', $chirp), ['message' => 'Hello, this is an edited message.']);
+        $response = $this->from(route('chirps.index'))->patch(route('chirps.update', $chirp), ['message' => 'Hello, this is an edited message.']);
         $this->assertDatabaseHas('chirps', [
             'message' => 'Hello, this is an edited message.'
         ]);
@@ -145,7 +145,7 @@ class ChirpControllerTest extends TestCase
         $chirp = Chirp::factory()->create();
         $this->assertDatabaseCount('Chirps', 1);
         $this->actingAs($chirp->user);
-        $response = $this->delete(route('chirps.destroy', $chirp));
+        $response = $this->from(route('chirps.index'))->delete(route('chirps.destroy', $chirp));
         $response->assertRedirect(route('chirps.index'));
         $this->assertDatabaseEmpty('chirps');
     }
