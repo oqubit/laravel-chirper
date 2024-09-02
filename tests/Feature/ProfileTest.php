@@ -144,6 +144,7 @@ class ProfileTest extends TestCase
                         ->etc()
                     )
                 )
+                ->has('following')
             );
     }
 
@@ -173,6 +174,7 @@ class ProfileTest extends TestCase
                     ->etc()
                 )
                 ->has('chirps', 0) // Assert that there are no chirps for the first user
+                ->has('following')
             );
     }
 }
