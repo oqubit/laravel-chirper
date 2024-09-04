@@ -22,7 +22,9 @@ class SendNewFollowerNotifications implements ShouldQueue
      */
     public function handle(UserFollowed $event): void
     {
-        // dd($event);
+        if (!$event->user->hasVerifiedEmail()) {
+            return;
+        }
         $event->user->notify(new NewFollower($event->follower));
     }
 }

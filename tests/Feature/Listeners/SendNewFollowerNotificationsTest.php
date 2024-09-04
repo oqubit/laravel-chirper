@@ -30,4 +30,16 @@ class SendNewFollowerNotificationsTest extends TestCase
         Notification::assertSentTo($user, NewFollower::class);
         Notification::assertCount(1);
     }
+
+    public function test_notification_is_sent_only_to_a_verified_users_email(): void
+    {
+        Notification::fake();
+        $user = User::factory()->unverified()->create();
+        $follower = User::factory()->create();
+        $event = new UserFollowed($user, $follower);
+        $listener = new SendNewFollowerNotifications();
+        $listener->handle($event);
+
+        Notification::assertNothingSent();
+    }
 }
