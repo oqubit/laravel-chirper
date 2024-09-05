@@ -29,8 +29,8 @@ class ChirpController extends Controller
                 ->when($shouldFilter, fn($q) =>
                     $q->whereIn(
                         'user_id',
-                        auth()->user()->follows->pluck('id')
-                            ->merge(auth()->id())
+                        Auth()->user()->follows->pluck('id')
+                            ->merge(Auth()->id())
                     )
                 )
                 ->latest()

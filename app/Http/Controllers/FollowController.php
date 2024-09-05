@@ -7,15 +7,33 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class FollowController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(User $user): Response
     {
-        //
+        $following = $user
+            ->follows()
+            ->orderByPivot('created_at', 'desc')
+            ->select('user_id as id', 'name')
+            ->addSelect(['following' => function ($query) {
+                $query->select('id as following')
+                    ->from('follower_user')
+                    ->whereColumn('follower_id', Auth()->id())
+                    ->whereColumn('user_id', 'users.id');
+            }])
+            ->get()
+            ->makeHidden('pivot');
+
+        return Inertia::render('Follow/Index', [
+            'user' => $user->only(['id', 'name']),
+            'following' => fn() => $following,
+        ]);
     }
 
     /**
@@ -41,10 +59,10 @@ class FollowController extends Controller
             ]
         ]);
         /** @var \App\Models\User */
-        $authUser = auth()->user();
+        $authUser = Auth()->user();
         $authUser->follows()->attach($validated['id']);
         $following = User::findOrFail($validated['id']);
-        UserFollowed::dispatch($following, auth()->user());
+        UserFollowed::dispatch($following, Auth()->user());
         return back();
     }
 
@@ -78,7 +96,7 @@ class FollowController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         /** @var \App\Models\User */
-        $authUser = auth()->user();
+        $authUser = Auth()->user();
         $authUser->follows()->detach($id);
         return back();
     }

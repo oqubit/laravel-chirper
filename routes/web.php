@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/users/{user}', [ProfileController::class, 'show'])->middleware('verified')->name('profile.show');
+    Route::get('/users/{user}/following', [FollowController::class, 'index'])->middleware('verified')->name('follow.index');
     Route::post('/follow', [FollowController::class, 'store'])->middleware('verified')->name('follow.store');
     Route::delete('/unfollow/{user}', [FollowController::class, 'destroy'])->middleware('verified')->name('follow.destroy');
 });

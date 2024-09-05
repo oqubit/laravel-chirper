@@ -1,6 +1,6 @@
 import Chirp from "@/Components/Chirp";
 import Heading from "@/Components/Heading";
-import Authenticated from "@/Layouts/AuthenticatedLayout";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router, usePage } from "@inertiajs/react";
 import { useState } from "react";
 
@@ -22,7 +22,7 @@ export default function Show({ user, chirps, following }) {
     };
 
     return (
-        <Authenticated user={auth.user}>
+        <AuthenticatedLayout user={auth.user}>
             <Head title={user.name} />
             <Heading user={user} following={following} />
             <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -37,6 +37,6 @@ export default function Show({ user, chirps, following }) {
                     ))}
                 </div>
             </div>
-        </Authenticated>
+        </AuthenticatedLayout>
     );
 }

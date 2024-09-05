@@ -36,6 +36,17 @@ export default function Heading({ user, following }) {
                                 {dayjs(user.created_at).format('MMMM YYYY')}
                             </time>
                         </p>
+                        <div className="mt-3">
+                            <Link
+                                href={route('follow.index', user.id)}
+                            >
+                                <span>{user.follows_count}</span>
+                                {' '}
+                                <span className="text-sm font-medium text-gray-500">
+                                    Following
+                                </span>
+                            </Link>
+                        </div>
                     </div>
                 </div>
 
