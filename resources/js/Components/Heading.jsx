@@ -10,12 +10,12 @@ export default function Heading({ user, following }) {
 
     const submitFollow = (e) => {
         e.preventDefault();
-        post(route("follow.store"), { only: ["following"], preserveScroll: true });
+        post(route("follow.store"), { only: ['following', 'user'], preserveScroll: true });
     };
 
     const submitUnfollow = (e) => {
         e.preventDefault();
-        router.delete(route("follow.destroy", user.id), { only: ["following"], preserveScroll: true });
+        router.delete(route("follow.destroy", user.id), { only: ['following', 'user'], preserveScroll: true });
     };
 
     return (
@@ -38,9 +38,18 @@ export default function Heading({ user, following }) {
                         </p>
                         <div className="mt-3">
                             <Link
+                                href={route('followers', user.id)}
+                            >
+                                <span>{user.followers_count}</span>
+                                {' '}
+                                <span className="text-sm font-medium text-gray-500">
+                                    Followers
+                                </span>
+                            </Link>
+                            <Link
                                 href={route('follow.index', user.id)}
                             >
-                                <span>{user.follows_count}</span>
+                                <span className="ml-4">{user.follows_count}</span>
                                 {' '}
                                 <span className="text-sm font-medium text-gray-500">
                                     Following

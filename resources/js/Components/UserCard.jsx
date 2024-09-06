@@ -9,12 +9,12 @@ export default function UseCard({ user }) {
 
     const submitFollow = (e) => {
         e.preventDefault();
-        post(route("follow.store"), { only: ["following"], preserveScroll: true });
+        post(route("follow.store"), { only: ['followList'], preserveScroll: true });
     };
 
     const submitUnfollow = (e) => {
         e.preventDefault();
-        router.delete(route("follow.destroy", user.id), { only: ["following"], preserveScroll: true });
+        router.delete(route("follow.destroy", user.id), { only: ['followList'], preserveScroll: true });
     };
 
     return (

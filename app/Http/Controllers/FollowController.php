@@ -32,7 +32,7 @@ class FollowController extends Controller
 
         return Inertia::render('Follow/Index', [
             'user' => $user->only(['id', 'name']),
-            'following' => fn() => $following,
+            'followList' => fn() => $following,
         ]);
     }
 

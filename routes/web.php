@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ChirpController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\ListFollowersController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/users/{user}', [ProfileController::class, 'show'])->middleware('verified')->name('profile.show');
     Route::get('/users/{user}/following', [FollowController::class, 'index'])->middleware('verified')->name('follow.index');
+    Route::get('/users/{user}/followers', ListFollowersController::class)->middleware('verified')->name('followers');
     Route::post('/follow', [FollowController::class, 'store'])->middleware('verified')->name('follow.store');
     Route::delete('/unfollow/{user}', [FollowController::class, 'destroy'])->middleware('verified')->name('follow.destroy');
 });
