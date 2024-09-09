@@ -1,6 +1,7 @@
 import { Link, Head } from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import UserCard from "@/Components/UserCard";
+import PageTabs from "@/Components/PageTabs";
 
 export default function Index({ user, followList }) {
     const pageTitle = route().current('followers') ? (
@@ -8,7 +9,20 @@ export default function Index({ user, followList }) {
     ) : (
         `${user.name} Follows`
     );
-    
+
+    const tabs = [
+        {
+            href: route('followers', user.id),
+            active: route().current('followers', user.id),
+            text: 'Followers'
+        },
+        {
+            href: route('follow.index', user.id),
+            active: route().current('chirps.index', user.id),
+            text: 'Following'
+        }
+    ]
+
     return (
         <AuthenticatedLayout user={user}>
             <Head title={pageTitle} />
@@ -21,6 +35,7 @@ export default function Index({ user, followList }) {
                 </Link>
             </h1>
             <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+                <PageTabs tabs={tabs} />
                 <div className="divide-y bg-white mt-6 rounded-lg">
                     {followList.map((user) => (
                         <UserCard

@@ -6,7 +6,7 @@ import LoadingSpinner from "@/Components/LoadingSpinner";
 import ChirpsList from "@/Components/ChirpsList";
 import { useForm, Head, router } from "@inertiajs/react";
 import Paginate from "@/Components/Paginate";
-import FilterTabs from "@/Components/FilterTabs";
+import PageTabs from "@/Components/PageTabs";
 
 export default function Index({ auth, chirps }) {
     const { data, setData, post, processing, reset, errors } = useForm({
@@ -18,6 +18,21 @@ export default function Index({ auth, chirps }) {
     const [loading, setLoading] = useState(false);
     const [chirpsListHeight, setChirpsListHeight] = useState(0);
     const shouldFilter = route().current('chirps.index', { filter: 'true' });
+
+    const tabs = [
+        {
+            href: route('chirps.index', { filter: 'false' }), 
+            only: ['chirps'],
+            active: route().current('chirps.index', { filter: 'false' }), // TODO: add "or" case for chirps url without the filter url param
+            text: 'All'
+        },
+        {
+            href: route('chirps.index', { filter: 'true' }), 
+            only: ['chirps'],
+            active: route().current('chirps.index', { filter: 'true' }),
+            text: 'Followed'
+        }
+    ]
 
     useEffect(() => {
         if (chirpsListRef.current) {
@@ -95,7 +110,7 @@ export default function Index({ auth, chirps }) {
                     </PrimaryButton>
                 </form>
 
-                <FilterTabs shouldFilter={shouldFilter} />
+                <PageTabs tabs={tabs} />
 
                 {loading ? (
                     <LoadingSpinner style={{ height: chirpsListHeight }} />
