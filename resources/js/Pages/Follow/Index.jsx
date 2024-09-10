@@ -18,7 +18,7 @@ export default function Index({ user, followList }) {
         },
         {
             href: route('follow.index', user.id),
-            active: route().current('chirps.index', user.id),
+            active: route().current('follow.index', user.id),
             text: 'Following'
         }
     ]

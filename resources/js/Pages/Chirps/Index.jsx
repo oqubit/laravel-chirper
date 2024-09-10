@@ -21,15 +21,15 @@ export default function Index({ auth, chirps }) {
 
     const tabs = [
         {
-            href: route('chirps.index', { filter: 'false' }), 
+            href: route('chirps.index', { filter: 'false' }),
             only: ['chirps'],
-            active: route().current('chirps.index', { filter: 'false' }), // TODO: add "or" case for chirps url without the filter url param
+            active: !shouldFilter,
             text: 'All'
         },
         {
-            href: route('chirps.index', { filter: 'true' }), 
+            href: route('chirps.index', { filter: 'true' }),
             only: ['chirps'],
-            active: route().current('chirps.index', { filter: 'true' }),
+            active: shouldFilter,
             text: 'Followed'
         }
     ]
